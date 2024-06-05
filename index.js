@@ -19,12 +19,12 @@ const MongoStore = require('connect-mongo');
 const store=MongoStore.create({
     mongoUrl:dbUrl,
     crypto:{
-        secret:process.env.SECRET,
+        secret:"secret123",
     }
 })
 const sessionOptions={
     store,
-    secret:process.env.SECRET,
+    secret:"secret123",
     resave:false,
     saveUninitialized:true
 }
