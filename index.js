@@ -13,7 +13,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 require('dotenv').config();
 var ObjectID = require('mongodb').ObjectID;
-const dbUrl=process.env.ATLASDB_URL;
+const dbUrl="mongodb+srv://srtanushrisoni22:naUyxc1G4kPwoEBr@cluster0.9xwduo7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0process.env.ATLASDB_URL";
 var session = require('express-session');
 const MongoStore = require('connect-mongo');
 const store=MongoStore.create({
