@@ -9,16 +9,55 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(methodOverride('_method'));
 const mongoose = require('mongoose');
-async function mongo(){
-    await mongoose.connect('mongodb://127.0.0.1:27017/test')
-    .then((res)=>{
-        console.log("connected")
-    })
-}
-mongo();
-app.listen(port,()=>{
-    console.log("working!");
+const dotenv = require('dotenv')
+dotenv.config()
+require('dotenv').config();
+var ObjectID = require('mongodb').ObjectID;
+const dbUrl=process.env.ATLASDB_URL;
+var session = require('express-session');
+const MongoStore = require('connect-mongo');
+const store=MongoStore.create({
+    mongoUrl:dbUrl,
+    crypto:{
+        secret:process.env.SECRET,
+    }
 })
+const sessionOptions={
+    store,
+    secret:process.env.SECRET,
+    resave:false,
+    saveUninitialized:true
+}
+
+app.use(session(sessionOptions));
+
+app.set("views",path.join(__dirname,"views"));
+app.set("view engine","ejs");
+app.use(express.urlencoded({extended: true}));
+mongoose.connect(dbUrl)
+.then(()=>{
+    console.log("connected to db");
+
+}).catch((err)=>{
+    console.log(err);
+})
+
+app.listen(port,()=>{
+    console.log("Working")
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
 const schema=mongoose.Schema({topic:String,title:String,content:String});
 const data=mongoose.model("data",schema);
 app.get("/posts",async(req,res)=>{
